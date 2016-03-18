@@ -1,14 +1,9 @@
 var VideoList = (props) => (
   <div className="video-list media">
-    <VideoListEntry video={props.video[0]}/>
-    <VideoListEntry />
-    <VideoListEntry />
-    <VideoListEntry />
-    <VideoListEntry />
-    <VideoListEntry />
-    <VideoListEntry />
-    <VideoListEntry />
-    <VideoListEntry />
+    <VideoListEntry video={props.videos[0]}/>
+    <VideoListEntry video={props.videos[1]}/>
+    <VideoListEntry video={props.videos[2]}/>
+
   </div>
 );
 
