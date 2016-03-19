@@ -1,4 +1,4 @@
-var searchYouTube = (options, callback) => {
+var search = (options, callback) => {
   // TODO
   $.ajax({
     url: 'https://www.googleapis.com/youtube/v3/search',
@@ -21,4 +21,6 @@ var searchYouTube = (options, callback) => {
     }
   });
 };
+
+var searchYouTube = _.debounce(search, 400);
 window.searchYouTube = searchYouTube;

@@ -9,8 +9,8 @@ class App extends React.Component {
           videoId: ''
         },
         snippet: {
-          title: 'Unavailable',
-          description: 'Unavailable'
+          title: 'Welcome to Recast.ly!',
+          description: 'Search and click a video to get started!'
         }
       },
       //exampleVideoData[0],
@@ -26,7 +26,7 @@ class App extends React.Component {
   }
 
   handleSearch(e) {
-    console.log('e => ',e);
+    //console.log('e => ',e);
     var text = e.target.value;
     var options = {};
     // set the key to window key
@@ -41,31 +41,32 @@ class App extends React.Component {
       // set state
       this.setState({
         // set videoList to data
-        videoList: data
+        videoList: data,
+        'currentVideo': data[0]
       });
     };
     // call search you tube with callback and options
     searchYouTube(options, callback.bind(this));
   }
 
-  debounce(func, wait, immediate) {
-    var timeout;
-    return function() {
-      var context = this, args = arguments;
-      var later = function() {
-        timeout = null;
-        if (!immediate) {
-          func.apply(context, args);
-        }
-      };
-      var callNow = immediate && !timeout;
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-      if (callNow) {
-        func.apply(context, args);
-      }
-    };
-  }
+  // debounce(func, wait, immediate) {
+  //   var timeout;
+  //   return function() {
+  //     var context = this, args = arguments;
+  //     var later = function() {
+  //       timeout = null;
+  //       if (!immediate) {
+  //         func.apply(context, args);
+  //       }
+  //     };
+  //     var callNow = immediate && !timeout;
+  //     clearTimeout(timeout);
+  //     timeout = setTimeout(later, wait);
+  //     if (callNow) {
+  //       func.apply(context, args);
+  //     }
+  //   };
+  // }
 
   //component did mount
   componentDidMount() {
