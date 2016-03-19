@@ -6,21 +6,25 @@ class App extends React.Component {
       // State for the current video
       currentVideo: exampleVideoData[0],
       // State for the list of videos
-      videoList: []
+      videoList: exampleVideoData
     };
-  } 
+  }
 
-
+  handleClick(video) {
+    this.setState({
+      'currentVideo': video
+    });
+  }
 
   render() {
     return (
       <div>
         <Nav />
         <div className="col-md-7">
-          <VideoPlayer video={exampleVideoData[0]}/>
+          <VideoPlayer state={this.state}/>
         </div>
         <div className="col-md-5">
-          <VideoList videos={exampleVideoData} />
+          <VideoList videos={exampleVideoData} setState={this.setState.bind(this)} state={this.state} handleClick={this.handleClick.bind(this)}/>
         </div>
       </div>
     );
