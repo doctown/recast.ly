@@ -96,14 +96,18 @@ class App extends React.Component {
       <div>
       <Nav handleSearch={this.handleSearch.bind(this)}/>
       <div className="col-md-7">
-      <VideoPlayer video={this.state.currentVideo}/>
+      <VideoPlayer video={this.props.currentVideo}/>
       </div>
       <div className="col-md-5">
-      <VideoList videos={this.state.videoList} handleClick={this.handleClick.bind(this)}/>
+      <VideoList videos={this.props.videoList} handleClick={this.handleClick.bind(this)}/>
       </div>
       </div>
       );
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('app'));
+var mapStateToProps = function(state) {
+  return state;
+};
+
+connect(mapStateToProps)(App);
