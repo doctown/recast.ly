@@ -2,92 +2,56 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      // State for the current video
-      currentVideo: {
-        id: {
-          videoId: ''
-        },
-        snippet: {
-          title: 'Welcome to Recast.ly!',
-          description: 'Search and click a video to get started!'
-        }
-      },
-      //exampleVideoData[0],
-      // State for the list of videos
-      videoList: []//exampleVideoData
-    };
   }
 
+  /*
+   * Change the current video playing on the video player based on the one
+   * clicked on by the user.
+   *
+   * @params: video - video selection to change the current video to
+   */
   handleClick(video) {
-    this.setState({
-      'currentVideo': video
-    });
+    this.props.dispatch(actions.changeCurrentVideo(video));
   }
 
-  handleSearch(e) {
-    //console.log('e => ',e);
-    var text = e.target.value;
+  /*
+   * Handle input from the user for searching for YouTube request by sending
+   * the request to the YouTube API and making the necessary adjustments.
+   *
+   * @params: event - the event triggered by inputting text in the form
+   */
+  handleSearch(event) {
     var options = {};
-    // set the key to window key
     options.key = YOUTUBE_API_KEY;
-    // set query to dogs
-    options.query = text;
-    // set max 5
+    var jsonpRequest = function(url, callback) {
+      var script = document.createElement( 'script' );
+      script.type = 'text/javascript';
+      script.src = url + '?' + callback + '=parseResponse';
+      document.body.appendChild( script );
+    };    options.query = event.target.value;
     options.max = 5;
 
-      // create callback
     var callback = function (data) {
-      // set state
-      this.setState({
-        // set videoList to data
-        videoList: data,
-        'currentVideo': data[0]
-      });
+      this.props.dispatch(actions.changeCurrentVideo(data));
+      this.props.dispatch(actions.changeVideoList(data[0]));
     };
-    // call search you tube with callback and options
     searchYouTube(options, callback.bind(this));
   }
 
-  // debounce(func, wait, immediate) {
-  //   var timeout;
-  //   return function() {
-  //     var context = this, args = arguments;
-  //     var later = function() {
-  //       timeout = null;
-  //       if (!immediate) {
-  //         func.apply(context, args);
-  //       }
-  //     };
-  //     var callNow = immediate && !timeout;
-  //     clearTimeout(timeout);
-  //     timeout = setTimeout(later, wait);
-  //     if (callNow) {
-  //       func.apply(context, args);
-  //     }
-  //   };
-  // }
-
-  //component did mount
+  /*
+   * Initialize movies in the viewer by retrieving a list of movies from the
+   * YouTube API
+   */
   componentDidMount() {
-    // create a variable called option
     var options = {};
-    // set the key to window key
     options.key = YOUTUBE_API_KEY;
-    // set query to dogs
-    options.query = 'dogs';
-    // set max 5
+    options.query = 'react';
     options.max = 5;
 
-    // create callback
+    // Callback to process data received from YouTube API
     var callback = function (data) {
-      // set state
-      this.setState({
-        // set videoList to data
-        videoList: data
-      });
+      this.props.dispatch(actions.changeCurrentVideo(data));
     };
-    // call search you tube with callback and options
     searchYouTube(options, callback.bind(this));
   }
 
@@ -96,18 +60,33 @@ class App extends React.Component {
       <div>
       <Nav handleSearch={this.handleSearch.bind(this)}/>
       <div className="col-md-7">
-      <VideoPlayer video={this.props.currentVideo}/>
+      <VideoPlayer video={store.getState().currentVideo}/>
       </div>
       <div className="col-md-5">
-      <VideoList videos={this.props.videoList} handleClick={this.handleClick.bind(this)}/>
+      <VideoList dispatch={this.props.dispatch} videos={store.getState().videoList}/>
       </div>
       </div>
       );
   }
 }
-
+/*
 var mapStateToProps = function(state) {
   return state;
 };
 
-connect(mapStateToProps)(App);
+//connect(mapStateToProps)(App);
+
+
+/*
+IMPLEMENT LATER:
+  Binds dispatch to props and will have access to dispatcher
+  var mapDispatchToProps = function(dispatch) {
+    return {
+      actions: bindActionsCreators(actions, dispatch);
+    }
+  };
+
+  connect(mapStateToProps, mapDispatchToProps)(App);
+*/
+// Create a store
+//var createStore = Redux.createStore;

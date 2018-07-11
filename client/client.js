@@ -13,12 +13,16 @@ let initialState = {
   videoList: []
 };
 
-let store = configureStore(initialState);
+const { createStore } = Redux;
+let store = createStore(reducer);
+//store.subscribe(render);
+// Alternative method of creating store
+// let store = configureStore(initialState);
 
 
 
-ReactDOM.render(<Provider store={store}>
-  <App />
-  </Provider>, 
+ReactDOM.render(//<Provider store={store}>
+   <App store={}/>,
+//  </Provider>,
   document.getElementById('app')
   );

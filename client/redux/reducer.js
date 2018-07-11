@@ -1,25 +1,39 @@
 //Create a reducer
-var reducerCurrentVideo = function(state, action) {
+const initialState = {
+  video: {
+    id: {
+      videoId: ""
+    },
+    snippet: {
+      title: "Title Unavailable",
+      description: "Description Unavailable"
+    }
+  },
+  videoList: []
+};
+
+let reducer = function(state = initialState, action) {
   // Add switch statement
   switch (action.type) {
   case 'CHANGE_VIDEO':
     //With this type we change the state to a new object
-    Object.assign({}, state, {
+    return Object.assign({}, state, {
       id: {
-        videoId: action.id.videoId
+        videoId: action.video.id.videoId
       },
       snippet: {
-        title: action.title,
-        description: action.description
-      },
+        title: action.video.title,
+        description: action.video.description
+      }
     });
     break;
-  case 'SEARCH':
-    Object.assign({}, state, {
-      videoList: [],
+  case 'SEARCH_INPUT': // Create a reducer for videos
+    return Object.assign({}, state, {
+      videoList: action.videos
     });
+    break;
   default:
     return state;
   }
 };
-// Create a reducer for videos
+
